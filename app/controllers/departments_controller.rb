@@ -1,6 +1,6 @@
 class DepartmentsController < ApplicationController
   def index
-    @departments = Department.all.order({ :created_at => :desc })
+    @department = Department.all.order({ :created_at => :desc })
 
     render({ :template => "departments/index" })
   end
@@ -40,9 +40,10 @@ class DepartmentsController < ApplicationController
 
   def destroy
     the_id = params.fetch("path_id")
-    @department = Department.where({ :id => the_id }).at(0)
+    matching_records = Department.where({ :id => the_id })
+    the_department = matching_records.first
 
-    @department.destroy
+    the_department.destroy
 
     redirect_to("/departments", { :notice => "Department deleted successfully."} )
   end
